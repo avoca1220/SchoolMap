@@ -5,11 +5,12 @@ import java.util.ArrayList;
 public class Room
 {
     private String name;
-    private ArrayList<Teacher> teachers = new ArrayList<Teacher>();
+    private ArrayList<String> teachers = new ArrayList<String>();
 
-    public Room(String name)
+    public Room(String name, String room)
     {
         this.name = name;
+        teachers.add(room);
     }
 
     public boolean multipleTeachers()
@@ -22,12 +23,12 @@ public class Room
         return this.name;
     }
 
-    public ArrayList<Teacher> getTeachers()
+    public ArrayList<String> getTeachers()
     {
         return teachers;
     }
 
-    public void addTeacher(Teacher teacher)
+    public void addTeacher(String teacher)
     {
         teachers.add(teacher);
     }

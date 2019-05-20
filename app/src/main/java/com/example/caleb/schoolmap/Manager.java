@@ -18,7 +18,7 @@ public class Manager
     {
         for(Teacher teacher : teachers)
         {
-            if (teacher.getName().equals(room.getTeachers().get(index).getName()))
+            if (teacher.getName().equals(room.getTeachers().get(index)))
             {
                 return teacher;
             }
@@ -32,7 +32,7 @@ public class Manager
     {
         for(Room room : rooms)
         {
-            if (room.getName().equals(teacher.getRooms().get(index).getName()))
+            if (room.getName().equals(teacher.getRooms().get(index)))
             {
                 return room;
             }
@@ -42,11 +42,33 @@ public class Manager
         throw new NoSuchElementException();
     }
 
-    public void addTeacher()
+    public void addTeacher(String name, String room)
     {
         for(Teacher teacher : teachers)
         {
+            if (teacher.getName().equals(name))
+            {
+                teacher.addRoom(room);
+            }
+            else
+            {
+                teachers.add(new Teacher(name, room));
+            }
+        }
+    }
 
+    public void addRoom(String name, String teacher)
+    {
+        for(Room room : rooms)
+        {
+            if(room.getName().equals(name))
+            {
+                room.addTeacher(teacher);
+            }
+            else
+            {
+                rooms.add(new Room(name, teacher));
+            }
         }
     }
 
