@@ -25,8 +25,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private final int WIDTH = 3840;
     private final int HEIGHT = 2160;
 
-    private int[] teachersToClassrooms;
-    private int[] classroomsToTeachers;
+    Manager mainManager = ArrayProcessor.initialize(getResources().getStringArray(R.array.teachers_array), getResources().getStringArray(R.array.room_array));
 
     //Toggle on and off each time onItemSelected is called to ignore the call of the other, changed entry.
     boolean listenToChange = false;
@@ -57,8 +56,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         map = (com.ortiz.touch.TouchImageView)findViewById(R.id.map);
         map.setMaxZoom(20);
 
-        Log.d("arrs", Arrays.toString(teachersToClassrooms));
-        Log.d("arrs", Arrays.toString(classroomsToTeachers));
+
     }
 
 
@@ -89,9 +87,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    //Incorporate all of that object oriented bullshit into the actual spinner controllers
     public void teacherSelected(int val)
     {
-        classroomSpinner.setSelection(teachersToClassrooms[val]);
+        Teacher teacher = mainManager.getTeacherByName(getResources().getStringArray(R.array.teachers_array)[val]);
+        classroomSpinner.setSelection();
         map.setZoom((float)20, (float)(getResources().getIntArray(R.array.x_coords)[val])/WIDTH, (float)(getResources().getIntArray(R.array.y_coords)[val])/HEIGHT);
     }
 

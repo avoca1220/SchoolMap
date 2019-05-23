@@ -7,16 +7,21 @@ public class Room
     private String name;
     private ArrayList<String> teachers = new ArrayList<String>();
 
-    public Room(String name, String room)
+    //Used to fetch the corresponding entry in the array used for the spinnder
+    private int indexInArray;
+
+    public Room(String name, String room, int indexInArray)
     {
         this.name = name;
         teachers.add(room);
+        this.indexInArray = indexInArray;
     }
 
-    public boolean multipleTeachers()
+    public int numTeachers()
     {
-        return (teachers.size() > 1);
+        return teachers.size();
     }
+
 
     public String getName()
     {
@@ -31,6 +36,11 @@ public class Room
     public void addTeacher(String teacher)
     {
         teachers.add(teacher);
+    }
+
+    public int getIndex()
+    {
+        return indexInArray;
     }
 
 
