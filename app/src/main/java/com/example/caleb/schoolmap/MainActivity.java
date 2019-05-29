@@ -1,6 +1,7 @@
 package com.example.caleb.schoolmap;
 
 import android.os.Build;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,8 +25,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private TouchImageView map;
     private final int WIDTH = 3840;
     private final int HEIGHT = 2160;
-
-    Manager mainManager = ArrayProcessor.initialize(getResources().getStringArray(R.array.teachers_array), getResources().getStringArray(R.array.room_array));
+    private Manager mainManager;
 
     //Toggle on and off each time onItemSelected is called to ignore the call of the other, changed entry.
     boolean listenToChange = false;
@@ -33,6 +33,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        mainManager = ArrayProcessor.initialize(getResources().getStringArray(R.array.teachers_array), getResources().getStringArray(R.array.room_array));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -91,15 +94,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void teacherSelected(int val)
     {
         Teacher teacher = mainManager.getTeacherByName(getResources().getStringArray(R.array.teachers_array)[val]);
-        classroomSpinner.setSelection();
-        map.setZoom((float)20, (float)(getResources().getIntArray(R.array.x_coords)[val])/WIDTH, (float)(getResources().getIntArray(R.array.y_coords)[val])/HEIGHT);
+
+
+        classroomSpinner.setSelection(mainManager.getRoomByName(teacher.getRooms().get(0)).getIndex());
+        //map.setZoom((float)20, (float)(getResources().getIntArray(R.array.x_coords)[val])/WIDTH, (float)(getResources().getIntArray(R.array.y_coords)[val])/HEIGHT);
     }
 
 
     public void classroomSelected(int val)
     {
-        teacherSpinner.setSelection(classroomsToTeachers[val]);
-        map.setZoom((float)20, (float)(getResources().getIntArray(R.array.x_coords)[classroomsToTeachers[val]])/WIDTH, (float)(getResources().getIntArray(R.array.y_coords)[classroomsToTeachers[val]])/HEIGHT);
+
+        //Room room = mainManager.getRoomByName(getResources().getStringArray(R.array.room_array)[val]);
+        //teacherSpinner.setSelection(mainManager.getTeacherByName(room.getTeachers().get(0)).getIndex());
+        //map.setZoom((float)20, (float)(getResources().getIntArray(R.array.x_coords)[classroomsToTeachers[val]])/WIDTH, (float)(getResources().getIntArray(R.array.y_coords)[classroomsToTeachers[val]])/HEIGHT);
     }
 
 

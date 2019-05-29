@@ -1,5 +1,7 @@
 package com.example.caleb.schoolmap;
 
+import android.util.Log;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -105,8 +107,11 @@ public class Manager
 
     public Teacher getTeacherByName(String name)
     {
+        Log.d("teacherval", "Initial name is " + name);
         for(Teacher teacher : teachers)
         {
+            Log.d("teacherval", teacher.getName());
+
             if(teacher.getName().equals(name))
             {
                 return teacher;
