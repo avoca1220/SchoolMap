@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 
 public class Manager
 {
-    private ArrayList<Teacher> teachers = new ArrayList<Teacher>();
+    public ArrayList<Teacher> teachers = new ArrayList<Teacher>();
     private ArrayList<Room> rooms = new ArrayList<Room>();
 
     private String[] teachersSorted;
@@ -51,17 +51,16 @@ public class Manager
 
     public void addTeacher(String name, String room)
     {
-        for(Teacher teacher : teachers)
-        {
+        Log.d("teacherval", "New entry: " + name + ", " + room);
 
-            if (teacher.getName().equals(name))
-            {
-                teacher.addRoom(room);
-            }
-            else
-            {
-                teachers.add(new Teacher(name, room, getSortedTeacherIndex(name)));
-            }
+        if(teacherExists(name))
+        {
+            getTeacherByName(name).addRoom(room);
+        }
+
+        else
+        {
+            teachers.add(new Teacher(name, room, getSortedTeacherIndex(name)));
         }
     }
 
@@ -75,10 +74,25 @@ public class Manager
             }
             else
             {
+                Log.d("teacherval", "Adding room to existing teacher");
                 rooms.add(new Room(name, teacher, getSortedRoomIndex(name)));
             }
         }
     }
+
+    public boolean teacherExists(String name)
+    {
+        for(int i = 0; i < teachers.size(); i++)
+        {
+            Log.d("teacherval","Iterating again!");
+            if (teachers.get(i).getName().equals(name))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public int getSortedTeacherIndex(String name)
     {
@@ -107,14 +121,11 @@ public class Manager
 
     public Teacher getTeacherByName(String name)
     {
-        Log.d("teacherval", "Initial name is " + name);
-        for(Teacher teacher : teachers)
+        for(int i = 0; i < teachers.size(); i++)
         {
-            Log.d("teacherval", teacher.getName());
-
-            if(teacher.getName().equals(name))
+            if(teachers.get(i).getName().equals(name))
             {
-                return teacher;
+                return teachers.get(i);
             }
         }
         return null;

@@ -59,6 +59,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         map = (com.ortiz.touch.TouchImageView)findViewById(R.id.map);
         map.setMaxZoom(20);
 
+        for(Teacher teacher : mainManager.teachers)
+        {
+            Log.d("teacherval", teacher.getName());
+        }
 
     }
 
