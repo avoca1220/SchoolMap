@@ -23,8 +23,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Spinner teacherSpinner;
     private Spinner classroomSpinner;
     private TouchImageView map;
-    private final int WIDTH = 3840;
-    private final int HEIGHT = 2160;
+    private final int ORIGINAL_WIDTH = 3840;
+    private final int ORIGINAL_HEIGHT = 2160;
+    private final int WIDTH = 1920;
+    private final int HEIGHT = 1080;
     private Manager mainManager;
 
     //Toggle on and off each time onItemSelected is called to ignore the call of the other, changed entry.
@@ -34,7 +36,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        mainManager = ArrayProcessor.initialize(getResources().getStringArray(R.array.teachers_array), getResources().getStringArray(R.array.room_array));
+        mainManager = ArrayProcessor.initialize(getResources().getStringArray(R.array.teachers_array), getResources().getStringArray(R.array.room_array),
+                getResources().getIntArray(R.array.x_coords), getResources().getIntArray(R.array.y_coords));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -58,12 +61,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         map = (com.ortiz.touch.TouchImageView)findViewById(R.id.map);
         map.setMaxZoom(20);
-
-        for(Teacher teacher : mainManager.teachers)
-        {
-            Log.d("teacherval", teacher.getName());
-        }
-
     }
 
 
@@ -94,14 +91,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    //Incorporate all of that object oriented bullshit into the actual spinner controllers
+    //Make the map zoomy bit functional
     public void teacherSelected(int val)
     {
-        Teacher teacher = mainManager.getTeacherByName(getResources().getStringArray(R.array.teachers_array)[val]);
+        Teacher teacher = mainManager.getTeacherByName(teacherSpinner.getSelectedItem().toString());
+        Room room = (mainManager.getRoomByName(teacher.getRooms().get(0)));
+        classroomSpinner.setSelection(room.getIndex());
 
-
-        classroomSpinner.setSelection(mainManager.getRoomByName(teacher.getRooms().get(0)).getIndex());
-        //map.setZoom((float)20, (float)(getResources().getIntArray(R.array.x_coords)[val])/WIDTH, (float)(getResources().getIntArray(R.array.y_coords)[val])/HEIGHT);
+        map.setZoom((float)20, ((float)((room.getXCoord())/ORIGINAL_WIDTH))*WIDTH, ((float)((room.getYCoord())/ORIGINAL_HEIGHT*HEIGHT))*HEIGHT);
+        Log.d("teacherval", Integer.toString(room.getXCoord()) + ", " + Integer.toString(room.getYCoord()));
     }
 
 

@@ -66,7 +66,7 @@ public abstract class ArrayProcessor
     }
 
 
-    public static Manager initialize(String[] teachers, String[] rooms)
+    public static Manager initialize(String[] teachers, String[] rooms, int[] xCoords, int[] yCoords)
     {
         Manager manager = new Manager(teachers, rooms);
 
@@ -74,8 +74,9 @@ public abstract class ArrayProcessor
         for(int i = 0; i < teachers.length; i++)
         {
             manager.addTeacher(teachers[i], rooms[i]);
-            manager.addRoom(rooms[i], teachers[i]);
+            manager.addRoom(rooms[i], teachers[i], xCoords[i], yCoords[i]);
         }
+
 
         return manager;
     }

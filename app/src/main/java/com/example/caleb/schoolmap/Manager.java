@@ -51,8 +51,6 @@ public class Manager
 
     public void addTeacher(String name, String room)
     {
-        Log.d("teacherval", "New entry: " + name + ", " + room);
-
         if(teacherExists(name))
         {
             getTeacherByName(name).addRoom(room);
@@ -64,19 +62,16 @@ public class Manager
         }
     }
 
-    public void addRoom(String name, String teacher)
+    public void addRoom(String name, String teacher, int xCoord, int yCoord)
     {
-        for(Room room : rooms)
+        if(roomExists(name))
         {
-            if(room.getName().equals(name))
-            {
-                room.addTeacher(teacher);
-            }
-            else
-            {
-                Log.d("teacherval", "Adding room to existing teacher");
-                rooms.add(new Room(name, teacher, getSortedRoomIndex(name)));
-            }
+            getRoomByName(name).addTeacher(teacher);
+        }
+
+        else
+        {
+            rooms.add(new Room(name, teacher, getSortedRoomIndex(name), xCoord, yCoord));
         }
     }
 
@@ -84,8 +79,19 @@ public class Manager
     {
         for(int i = 0; i < teachers.size(); i++)
         {
-            Log.d("teacherval","Iterating again!");
             if (teachers.get(i).getName().equals(name))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean roomExists(String name)
+    {
+        for(int i = 0; i < rooms.size(); i++)
+        {
+            if (rooms.get(i).getName().equals(name))
             {
                 return true;
             }
