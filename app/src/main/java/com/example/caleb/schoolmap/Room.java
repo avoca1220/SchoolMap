@@ -58,6 +58,11 @@ public class Room
         return this.yCoord;
     }
 
+    public String toString()
+    {
+        return name + ", " + teachers.toArray().toString();
+    }
+
 
 
 

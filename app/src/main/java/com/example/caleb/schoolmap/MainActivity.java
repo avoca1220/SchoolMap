@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private final int HEIGHT = 1080;
     private Manager mainManager;
 
+    private int debugCounter = 0;
+
     //Toggle on and off each time onItemSelected is called to ignore the call of the other, changed entry.
     boolean listenToChange = false;
 
@@ -61,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         map = (com.ortiz.touch.TouchImageView)findViewById(R.id.map);
         map.setMaxZoom(20);
+
+        listenToChange = true;
     }
 
 
@@ -98,8 +102,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Room room = (mainManager.getRoomByName(teacher.getRooms().get(0)));
         classroomSpinner.setSelection(room.getIndex());
 
-        map.setZoom((float)20, ((float)((room.getXCoord())/ORIGINAL_WIDTH))*WIDTH, ((float)((room.getYCoord())/ORIGINAL_HEIGHT*HEIGHT))*HEIGHT);
-        Log.d("teacherval", Integer.toString(room.getXCoord()) + ", " + Integer.toString(room.getYCoord()));
+        Log.d("teacherval", room.getName());
+
+        if(debugCounter == 0)
+        {
+            map.setZoom((float)5, (float)0.2, (float)0.2);
+        }
+        else if (debugCounter == 1)
+        {
+            map.setZoom((float)5, (float)0.5, (float)0.5);
+        }
+        else
+        {
+            map.setZoom((float)5, (float)0.8, (float)0.8);
+        }
+
+        debugCounter++;
+
+        //map.setZoom((float)20, (((float)room.getXCoord())/ORIGINAL_WIDTH), (((float)room.getYCoord())/ORIGINAL_HEIGHT));
+
+        Log.d("teacherval", Float.toString(((float)room.getXCoord())/ORIGINAL_WIDTH) + ", " + Float.toString(((float)room.getYCoord())/ORIGINAL_HEIGHT));
+        Log.d("teacherval", map.getScrollPosition().toString());
     }
 
 

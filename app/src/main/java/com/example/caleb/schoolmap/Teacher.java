@@ -42,4 +42,9 @@ public class Teacher
         return indexInArray;
     }
 
+    public String toString()
+    {
+        return name + ", " + rooms.toArray().toString();
+    }
+
 }
