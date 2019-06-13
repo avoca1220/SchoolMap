@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private final int HEIGHT = 1080;
     private Manager mainManager;
 
-    private int debugCounter = 0;
 
     //Toggle on and off each time onItemSelected is called to ignore the call of the other, changed entry.
     boolean listenToChange = false;
@@ -37,12 +36,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         mainManager = ArrayProcessor.initialize(getResources().getStringArray(R.array.teachers_array), getResources().getStringArray(R.array.room_array),
                 getResources().getIntArray(R.array.x_coords), getResources().getIntArray(R.array.y_coords));
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         classroomSpinner = (Spinner)findViewById(R.id.classrooms_spinner);
         ArrayAdapter<String> classroomAdapter = new ArrayAdapter<String>(MainActivity.this,
@@ -62,7 +60,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
         map = (com.ortiz.touch.TouchImageView)findViewById(R.id.map);
-        map.setMaxZoom(20);
+        map.setMaxZoom((float)20);
+
+        //Debugging
+        map.setZoom((float)20, (float)0.4, (float)0.5);
+
 
         listenToChange = true;
     }
@@ -70,23 +72,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
     {
-        Log.d("tog", Boolean.toString(listenToChange));
+        /*
         if(listenToChange)
         {
             if(parent == teacherSpinner)
             {
                 teacherSelected(position);
+                Log.d("teacherval", "Teacher changed");
             }
-            if(parent == classroomSpinner)
+            else
             {
-                classroomSelected(position);
+                Log.d("teacherval", "Classroom changed.");
             }
-            listenToChange = false;
         }
-        else
-        {
-            listenToChange = true;
-        }
+        */
+        teacherSelected(position);
+
 
     }
 
@@ -95,34 +96,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    //Make the map zoomy bit functional
+    //Any time a spinner is changed, the map resets. Why the hell does it do that? I'm not telling it to do that.
     public void teacherSelected(int val)
     {
-        Teacher teacher = mainManager.getTeacherByName(teacherSpinner.getSelectedItem().toString());
-        Room room = (mainManager.getRoomByName(teacher.getRooms().get(0)));
-        classroomSpinner.setSelection(room.getIndex());
 
-        Log.d("teacherval", room.getName());
+        Teacher teacher = mainManager.getTeacherByName(getResources().getStringArray(R.array.teachers_array)[val]);
+        Room room = (mainManager.getRoomByTeacher(teacher, 0));
 
-        if(debugCounter == 0)
-        {
-            map.setZoom((float)5, (float)0.2, (float)0.2);
-        }
-        else if (debugCounter == 1)
-        {
-            map.setZoom((float)5, (float)0.5, (float)0.5);
-        }
-        else
-        {
-            map.setZoom((float)5, (float)0.8, (float)0.8);
-        }
+        //classroomSpinner.setSelection(5);
 
-        debugCounter++;
+        Log.d("teacherval", teacher.getName());
+        Log.d("teacherval", Float.toString((float)room.getXCoord() / ORIGINAL_WIDTH) + Float.toString((float)room.getYCoord() / ORIGINAL_HEIGHT));
 
-        //map.setZoom((float)20, (((float)room.getXCoord())/ORIGINAL_WIDTH), (((float)room.getYCoord())/ORIGINAL_HEIGHT));
+        map.setZoom((float)20, ((float)room.getXCoord() / ORIGINAL_WIDTH), ((float)room.getYCoord() / ORIGINAL_HEIGHT));
 
-        Log.d("teacherval", Float.toString(((float)room.getXCoord())/ORIGINAL_WIDTH) + ", " + Float.toString(((float)room.getYCoord())/ORIGINAL_HEIGHT));
-        Log.d("teacherval", map.getScrollPosition().toString());
     }
 
 
